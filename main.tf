@@ -87,3 +87,25 @@ resource "ssh_resource" "init-replicaset" {
 
   commands = ["mongosh --port 37019 /tmp/replicaset-cfg.js"]
 }
+
+# Add Replica Set to Cluster
+
+locals {
+  hosts_file_cmds = [for i in local.hostsfile_this : "echo \"${i}\" | sudo tee -a /etc/hosts"]
+}
+
+resource "ssh_resource" "add-replicaset" {
+  bastion_host     = var.ssh_bastion.host
+  bastion_user     = var.ssh_bastion.user
+  bastion_password = var.ssh_bastion.password
+
+  host     = keys(var.configrs_hosts)[0]
+  user     = var.ssh_conn.user
+  password = var.ssh_conn.password
+
+  timeout = "30s"
+
+  commands = concat(local.hosts_file_cmds,
+                    "ls"
+                  )
+}
