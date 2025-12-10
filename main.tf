@@ -99,7 +99,7 @@ resource "ssh_resource" "add-replicaset" {
   bastion_user     = var.ssh_bastion.user
   bastion_password = var.ssh_bastion.password
 
-  host     = keys(var.configrs_hosts)[0]
+  host     = values(var.configrs_hosts)[0]
   user     = var.ssh_conn.user
   password = var.ssh_conn.password
 
