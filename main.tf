@@ -24,7 +24,7 @@ locals {
     }
   )
 
-  hostsfile_this = [ for i in range(var.node_count) : " ${local.fqdns[i]}" ]
+  hostsfile_this = [ for i in range(var.node_count) : "${openstack_networking_port_v2.port[i].all_fixed_ips[0]} ${local.fqdns[i]}" ]
   hostsfile_cfgrs = [ for k, v in var.configrs_hosts : "${v} ${k}" ]
 
   user-data = [for i in range(var.node_count) : templatefile("${path.module}/provision/cloud-init.yml.tftpl",
