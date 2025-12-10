@@ -1,6 +1,6 @@
 variable "name_prefix" {
   type    = string
-  default = "mongodb-cfg"
+  default = "mongodb-shrd"
 }
 
 variable "domain" {
