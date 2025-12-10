@@ -48,7 +48,7 @@ data "openstack_networking_network_v2" "network" {
 resource "openstack_networking_port_v2" "port" {
   count = var.node_count
 
-  name  = "port-${count.index}"
+  name  = "port-${random_id.cluster_id.hex}-${count.index}"
   network_id = data.openstack_networking_network_v2.network.id
 }
 
