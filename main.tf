@@ -25,11 +25,12 @@ locals {
   )
 
   hostsfile_this = [ for i in range(var.node_count) : "${openstack_networking_port_v2.port[i].fixed_ip.ip_address} ${local.fqdns[i]}" ]
+  hostsfile_cfgrs = [ for k, v in var.configrs_hosts : "${v} ${k}" ]
 
   user-data = [for i in range(var.node_count) : templatefile("${path.module}/provision/cloud-init.yml.tftpl",
     {
       fqdn              = local.fqdns[i]
-      hostsfile         = base64encode(join("\n", local.hostsfile_this))
+      hostsfile         = base64encode(join("\n", concat(local.hostsfile_this, local.hostsfile_cfgrs)))
       mongod-config     = base64encode(local.mongod-config[i])
       replicaset-config = base64encode(local.replicaset-config)
     }

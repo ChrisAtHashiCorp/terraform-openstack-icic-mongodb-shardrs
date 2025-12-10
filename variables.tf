@@ -25,6 +25,10 @@ variable "network" {
   type = string
 }
 
+variable "configrs_hosts" {
+  type = map(string)
+}
+
 variable "sshkey_prefix" {
   type    = string
   default = "mongodb"
