@@ -106,6 +106,6 @@ resource "ssh_resource" "add-replicaset" {
   timeout = "30s"
 
   commands = concat(local.hosts_file_cmds,
-                    "ls"
+                    [ "ls" ]
                   )
 }
