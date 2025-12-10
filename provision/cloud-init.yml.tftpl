@@ -13,7 +13,7 @@ write_files:
     defer: true
     content: ${mongod-config}
 
- - path: /etc/hosts
+  - path: /etc/hosts
     encoding: b64
     defer: true
     append: true
