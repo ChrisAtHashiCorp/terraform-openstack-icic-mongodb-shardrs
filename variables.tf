@@ -25,8 +25,8 @@ variable "network" {
   type = string
 }
 
-variable "configrs_hosts" {
-  type = map(string)
+variable "router_host" {
+  type = string
 }
 
 variable "sshkey_prefix" {

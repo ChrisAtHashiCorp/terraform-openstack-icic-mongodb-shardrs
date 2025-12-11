@@ -24,13 +24,12 @@ locals {
     }
   )
 
-  hostsfile_this = [ for i in range(var.node_count) : "${openstack_networking_port_v2.port[i].all_fixed_ips[0]} ${local.fqdns[i]}" ]
-  hostsfile_cfgrs = [ for k, v in var.configrs_hosts : "${v} ${k}" ]
+  hostsfile = [ for i in range(var.node_count) : "${openstack_networking_port_v2.port[i].all_fixed_ips[0]} ${local.fqdns[i]}" ]
 
   user-data = [for i in range(var.node_count) : templatefile("${path.module}/provision/cloud-init.yml.tftpl",
     {
       fqdn              = local.fqdns[i]
-      hostsfile         = base64encode(join("\n", concat(local.hostsfile_this, local.hostsfile_cfgrs)))
+      hostsfile         = base64encode(local.hostsfile)
       mongod-config     = base64encode(local.mongod-config[i])
       replicaset-config = base64encode(local.replicaset-config)
     }
@@ -88,14 +87,14 @@ resource "ssh_resource" "init-replicaset" {
   commands = ["mongosh --port 37019 /tmp/replicaset-cfg.js"]
 }
 
-# Add Replica Set to Cluster
+# Add Shard to Cluster
 
 resource "ssh_resource" "add-replicaset" {
   bastion_host     = var.ssh_bastion.host
   bastion_user     = var.ssh_bastion.user
   bastion_password = var.ssh_bastion.password
 
-  host     = values(var.configrs_hosts)[0]
+  host     = var.router_host
   user     = var.ssh_conn.user
   password = var.ssh_conn.password
 
