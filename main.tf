@@ -90,10 +90,6 @@ resource "ssh_resource" "init-replicaset" {
 
 # Add Replica Set to Cluster
 
-locals {
-  hosts_file_cmds = [for i in local.hostsfile_this : "echo \"${i}\" | sudo tee -a /etc/hosts"]
-}
-
 resource "ssh_resource" "add-replicaset" {
   bastion_host     = var.ssh_bastion.host
   bastion_user     = var.ssh_bastion.user
@@ -105,7 +101,5 @@ resource "ssh_resource" "add-replicaset" {
 
   timeout = "30s"
 
-  commands = concat(local.hosts_file_cmds,
-                    [ "ls" ]
-                  )
+  commands = [ "ls" ]
 }
