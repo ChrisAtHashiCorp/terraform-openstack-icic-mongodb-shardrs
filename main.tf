@@ -86,19 +86,3 @@ resource "ssh_resource" "init-replicaset" {
 
   commands = ["mongosh --port 37019 /tmp/replicaset-cfg.js"]
 }
-
-# Add Shard to Cluster
-
-resource "ssh_resource" "add-replicaset" {
-  bastion_host     = var.ssh_bastion.host
-  bastion_user     = var.ssh_bastion.user
-  bastion_password = var.ssh_bastion.password
-
-  host     = var.router_host
-  user     = var.ssh_conn.user
-  password = var.ssh_conn.password
-
-  timeout = "30s"
-
-  commands = [ "mongosh --port 37019 --eval \"sh.addShard(\"shrd-${random_id.cluster_id.hex}/${local.fqdns[0]}:37019\")\"" ]
-}
