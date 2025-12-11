@@ -100,5 +100,5 @@ resource "ssh_resource" "add-replicaset" {
 
   timeout = "30s"
 
-  commands = [ "ls" ]
+  commands = [ "mongosh --port 37019 --eval \"sh.addShard(\"shrd-${random_id.cluster_id.hex}/${local.fqdns[0]}:37019\")\"" ]
 }
