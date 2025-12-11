@@ -29,7 +29,7 @@ locals {
   user-data = [for i in range(var.node_count) : templatefile("${path.module}/provision/cloud-init.yml.tftpl",
     {
       fqdn              = local.fqdns[i]
-      hostsfile         = base64encode(local.hostsfile)
+      hostsfile         = base64encode(join("\n", local.hostsfile))
       mongod-config     = base64encode(local.mongod-config[i])
       replicaset-config = base64encode(local.replicaset-config)
     }
