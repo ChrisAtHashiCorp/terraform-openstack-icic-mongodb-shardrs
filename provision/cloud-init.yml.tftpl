@@ -1,6 +1,8 @@
 #cloud-config
 fqdn: ${fqdn}
 
+disable_root: false
+
 write_files:
   - path: /etc/mongod.conf
     encoding: b64
