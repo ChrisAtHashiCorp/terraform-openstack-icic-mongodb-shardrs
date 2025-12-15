@@ -38,7 +38,7 @@ variable "ssh_conn" {
   sensitive = true
   type = object({
     user     = optional(string, "root")
-    password = optional(string, null)
+    password = optional(string, "HashiPass123")
   })
   default = {}
 }
